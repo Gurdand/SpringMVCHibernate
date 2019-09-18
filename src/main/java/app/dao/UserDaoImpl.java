@@ -1,51 +1,41 @@
 package app.dao;
 
 import app.model.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private final SessionFactory sessionFactory;
-
-    @Autowired
-    public UserDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public List<User> getAllUsers() {
-        Session session = sessionFactory.getCurrentSession();
         //language=hql
-        return session.createQuery("FROM User", User.class).list();
+        return entityManager.createQuery("FROM User", User.class).getResultList();
     }
 
     @Override
     public void addUser(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(user);
+        entityManager.persist(user);
     }
 
     @Override
     public void updateUser(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(user);
+        entityManager.merge(user);
     }
 
     @Override
     public void deleteUser(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(user);
+        User deleteUser = entityManager.find(User.class, user.getId());
+        entityManager.remove(deleteUser);
     }
 
     @Override
     public User getUserById(Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(User.class, id);
+        return entityManager.find(User.class, id);
     }
 }
