@@ -16,14 +16,14 @@
 
     <section>
         <h2>Create User</h2>
-        <c:url value="/createUser" var="var"/>
+        <c:url value="/admin/createUser" var="var"/>
         <form action="${var}" method="post">
             <input name="name" placeholder="Name">
             <input name="login" placeholder="Login">
             <input name="password" placeholder="password">
             <select name="role">
-                <option name="user" selected >User</option>
-                <option name="admin">Admin</option>
+                <option name="user" value="user" selected >User</option>
+                <option name="admin" value="admin" >Admin</option>
             </select>
             <input type="submit" value="Создать"/>
         </form>
@@ -46,12 +46,12 @@
                 <td>${user.password}</td>
                 <td>${user.role}</td>
                 <td>
-                    <form method="get" action="/updateUser/${user.id}">
+                    <form method="get" action="/admin/updateUser/${user.id}">
                         <input type="submit" value="Изменить">
                     </form>
                 </td>
                 <td>
-                    <form method="get" action="/deleteUser/${user.id}">
+                    <form method="get" action="/admin/deleteUser/${user.id}">
 <%--                        <input type="hidden" name="id" value="${user.id}">--%>
 <%--                        <input type="hidden" name="name" value="${user.name}">--%>
 <%--                        <input type="hidden" name="login" value="${user.login}">--%>

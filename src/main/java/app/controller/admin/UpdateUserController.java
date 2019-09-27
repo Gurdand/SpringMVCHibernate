@@ -1,4 +1,4 @@
-package app.controller;
+package app.controller.admin;
 
 import app.model.User;
 import app.service.UserService;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping(value = "/updateUser")
+@RequestMapping(value = "/admin/updateUser")
 public class UpdateUserController {
 
     private UserService userService;
@@ -30,7 +30,7 @@ public class UpdateUserController {
     @PostMapping
     public ModelAndView updateUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/admin");
         userService.updateUser(user);
         return modelAndView;
     }

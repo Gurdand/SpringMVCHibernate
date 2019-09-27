@@ -38,4 +38,12 @@ public class UserDaoImpl implements UserDao {
     public User getUserById(Long id) {
         return entityManager.find(User.class, id);
     }
+
+    @Override
+    public User getUserByLogin(String login) {
+        //language=hql
+        List<User> userList = entityManager.createQuery("FROM User user WHERE user.login=:login", User.class)
+                .setParameter("login", login).getResultList();
+        return !userList.isEmpty() ? userList.get(0) : null;
+    }
 }

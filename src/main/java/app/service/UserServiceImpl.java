@@ -47,4 +47,10 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         return userDao.getUserById(id);
     }
+
+    @Override
+    @Transactional
+    public User getUserByLogin(String login) {
+        return userDao.getUserByLogin(login);
+    }
 }
