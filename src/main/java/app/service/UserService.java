@@ -1,8 +1,10 @@
 package app.service;
 
+import app.model.Role;
 import app.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserService {
 
@@ -17,4 +19,6 @@ public interface UserService {
     User getUserById(Long id);
 
     User getUserByLogin(String login);
+
+    List<Role> getAllRole();
 }

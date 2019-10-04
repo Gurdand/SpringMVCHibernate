@@ -43,7 +43,11 @@ public class AuthProviderImpl implements AuthenticationProvider {
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
 
-        grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+        user.getRoles().forEach(
+                (role) -> grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role))
+        );
+
+        //System.out.println(grantedAuthorities.toString());
 
         return new UsernamePasswordAuthenticationToken(user, null, grantedAuthorities);
 

@@ -1,10 +1,13 @@
 package app.dao;
 
+import app.model.Role;
 import app.model.User;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UserDaoImpl implements UserDao {
@@ -45,5 +48,11 @@ public class UserDaoImpl implements UserDao {
         List<User> userList = entityManager.createQuery("FROM User user WHERE user.login=:login", User.class)
                 .setParameter("login", login).getResultList();
         return !userList.isEmpty() ? userList.get(0) : null;
+    }
+
+    @Override
+    public List<Role> getAllRole() {
+        //language=JPQL
+        return entityManager.createQuery("FROM Role", Role.class).getResultList();
     }
 }

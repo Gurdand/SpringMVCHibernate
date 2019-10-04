@@ -1,9 +1,11 @@
 package app.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -13,22 +15,26 @@ public class User {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "login")
+    @Column(name = "login", unique = true)
     private String login;
 
     @Column(name = "password")
     private String password;
 
-    @Column(name = "role")
-    private String role;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable ( name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id") ,
+            inverseJoinColumns = @JoinColumn(name = "role_id") )
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
 
-    public User(String login, String password, String role) {
+    public User(String name, String login, String password, Set<Role> roles) {
+        this.name = name;
         this.login = login;
         this.password = password;
-        this.role = role;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -63,11 +69,20 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public Set<Role> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRoleByName(String roleName) {
+        roles.add(new Role(roleName));
+    }
+
+    @Override
+    public String toString() {
+        return "User " + getName() + " Roles: " + roles.toString();
     }
 }

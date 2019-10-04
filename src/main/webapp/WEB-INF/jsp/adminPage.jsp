@@ -21,10 +21,20 @@
             <input name="name" placeholder="Name">
             <input name="login" placeholder="Login">
             <input name="password" placeholder="password">
-            <select name="role">
-                <option name="user" value="user" selected >User</option>
-                <option name="admin" value="admin" >Admin</option>
+<%--            <c:forEach var="role" items="${rolesList}">--%>
+<%--                <label for="${role.roleName}">${role.roleName}</label>--%>
+<%--                <input id="${role.roleName}" type="checkbox" name="roleName" value="${role.roleName}"--%>
+<%--                       <c:if test="${role.roleName.equals('USER')}" >checked</c:if> />--%>
+<%--            </c:forEach>--%>
+            <select multiple name="roles">
+                <c:forEach var="role" items="${rolesList}">
+                    <option name="roleName" value="${role.roleId}_${role.roleName}">${role.roleName}</option>
+                </c:forEach>
             </select>
+<%--            <fieldset name="roles">--%>
+<%--                <input type="checkbox" name="user" value="USER" hidden checked>--%>
+<%--                <input type="checkbox" name="admin" value="ADMIN">--%>
+<%--            </fieldset>--%>
             <input type="submit" value="Создать"/>
         </form>
     </section>
@@ -35,7 +45,7 @@
             <th>Name</th>
             <th>Login</th>
             <th>Password</th>
-            <th>Role</th>
+            <th>Roles</th>
             <th>Action</th>
         </tr>
         <c:forEach var="user" items="${usersList}">
@@ -44,7 +54,9 @@
                 <td>${user.name}</td>
                 <td>${user.login}</td>
                 <td>${user.password}</td>
-                <td>${user.role}</td>
+                <td><c:forEach var="role" items="${user.roles}">
+                    <p>${role}</p>
+                </c:forEach></td>
                 <td>
                     <form method="get" action="/admin/updateUser/${user.id}">
                         <input type="submit" value="Изменить">
