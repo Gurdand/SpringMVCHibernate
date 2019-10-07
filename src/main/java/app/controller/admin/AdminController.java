@@ -36,9 +36,6 @@ public class AdminController {
 
     @PostMapping(path = "/createUser")
     public ModelAndView createUser(@ModelAttribute("user") User user ) {
-
-        //System.out.println(user.toString());
-
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin");
         userService.addUser(parseRoles(user)); //// Parse Roles

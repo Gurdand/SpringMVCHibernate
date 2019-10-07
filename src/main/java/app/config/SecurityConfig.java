@@ -1,14 +1,13 @@
 package app.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
@@ -16,14 +15,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @ComponentScan(basePackages = "app")
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationSuccessHandler successHandler;
+    private final AuthenticationSuccessHandler authenticationSuccessHandler;
 
-    private final AuthenticationProvider authenticationProvider;
+    private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(AuthenticationSuccessHandler successHandler,
-                          @Qualifier(value = "authProviderImpl") AuthenticationProvider authenticationProvider) {
-        this.successHandler = successHandler;
-        this.authenticationProvider = authenticationProvider;
+    public SecurityConfig(AuthenticationSuccessHandler successHandler, UserDetailsService userDetailsService) {
+        this.authenticationSuccessHandler = successHandler;
+        this.userDetailsService = userDetailsService;
     }
 
 
@@ -40,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .usernameParameter("login")
                     .loginProcessingUrl("/login")
                     .permitAll()
-                    .successHandler(successHandler)
+                    .successHandler(authenticationSuccessHandler)
                 .and()
                     .exceptionHandling().accessDeniedPage("/")
                 .and()
@@ -54,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider);
+        auth.userDetailsService(userDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance());
     }
+
 }
