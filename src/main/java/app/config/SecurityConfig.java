@@ -1,5 +1,6 @@
 package app.config;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -19,7 +20,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
 
-    public SecurityConfig(AuthenticationSuccessHandler successHandler, UserDetailsService userDetailsService) {
+    public SecurityConfig(AuthenticationSuccessHandler successHandler,
+                          @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
         this.authenticationSuccessHandler = successHandler;
         this.userDetailsService = userDetailsService;
     }

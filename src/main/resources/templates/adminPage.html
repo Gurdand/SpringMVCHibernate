@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User page</title>
+</head>
+<body>
+<h2>User Page</h2>
+
+<section>
+    <h2>Create User</h2>
+    <form action="/admin/createUser" method="post">
+        <input name="name" placeholder="Name">
+        <input name="login" placeholder="Login">
+        <input name="password" placeholder="password">
+        <select multiple name="roles" >
+            <option th:each="role : ${rolesList}" name="roleName"
+                    th:value="${role.roleId} + '_' + ${role.roleName}" th:text="${role.roleName}">Role Name</option>
+        </select>
+        <input type="submit" value="Создать"/>
+    </form>
+</section>
+
+    <a th:href="@{/user}">User Page</a>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Login</th>
+        <th>Password</th>
+        <th>Roles</th>
+        <th>Action</th>
+    </tr>
+        <tr th:each="user : ${usersList}">
+            <td th:text="${user.id}" >user id</td>
+            <td th:text="${user.name}" >user name</td>
+            <td th:text="${user.login}" >user login}</td>
+            <td th:text="${user.password}" >user password</td>
+            <td><p th:each="role : ${user.roles}" th:text="${role.roleName}" >role</p></td>
+            <td>
+                <form method="get" action="" th:action="@{'/admin/updateUser/' + ${user.id} }">
+                    <input type="submit" value="Изменить">
+                </form>
+            </td>
+            <td>
+                <form method="get" action="" th:action="@{'/admin/deleteUser/' + ${user.id} }">
+                    <input type="submit" value="Удалить">
+                </form>
+            </td>
+        </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org">
+<head>
+    <title>Update Page</title>
+</head>
+<body>
+    <h2>Update Page</h2>
+    <form method="post" action="/admin/updateUser">
+        <input type="hidden" name="id" th:value="${user.id}">
+        <input name="name" th:value="${user.name}">
+        <input name="login" th:value="${user.login}">
+        <input name="password" th:value="${user.password}">
+        <select multiple name="roles">
+            <option th:each="role : ${rolesList}" name="roleName"
+                    th:value="${role.roleId} + '_' + ${role.roleName}" th:text="${role.roleName}">Role Name</option>
+        </select>
+        <input type="submit" value="Обновить">
+    </form>
+</body>
+</html>

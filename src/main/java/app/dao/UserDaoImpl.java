@@ -2,14 +2,17 @@ package app.dao;
 
 import app.model.Role;
 import app.model.User;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
+@Transactional
+@EntityScan(basePackages = "app.model")
 public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
@@ -44,7 +47,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserByLogin(String login) {
-        //language=hql
+        //language=JPQL
         List<User> userList = entityManager.createQuery("FROM User user WHERE user.login=:login", User.class)
                 .setParameter("login", login).getResultList();
         return !userList.isEmpty() ? userList.get(0) : null;
