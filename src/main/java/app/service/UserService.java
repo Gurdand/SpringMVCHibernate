@@ -1,10 +1,8 @@
 package app.service;
 
-import app.model.Role;
 import app.model.User;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserService {
 
@@ -17,6 +15,4 @@ public interface UserService {
     void deleteUser(User user);
 
     User getUserById(Long id);
-
-    List<Role> getAllRole();
 }

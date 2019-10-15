@@ -83,10 +83,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public void addRoleByName(String roleName) {
-        roles.add(new Role(roleName));
-    }
-
     @Override
     public String toString() {
         return "User " + getName() + " Roles: " + roles.toString();

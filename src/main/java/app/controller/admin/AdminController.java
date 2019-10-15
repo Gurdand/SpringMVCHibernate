@@ -2,8 +2,10 @@ package app.controller.admin;
 
 import app.model.Role;
 import app.model.User;
+import app.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import app.service.UserService;
@@ -14,16 +16,18 @@ import java.util.*;
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping
     public ModelAndView usersPage() {
         List<User> users = userService.getAllUsers();
-        List<Role> roles = userService.getAllRole();
+        List<Role> roles = roleService.getAllRole();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminPage");
         modelAndView.addObject("rolesList", roles);
@@ -35,7 +39,7 @@ public class AdminController {
     public ModelAndView createUser(@ModelAttribute("user") User user ) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin");
-        userService.addUser(parseRoles(user)); //// Parse Roles
+        userService.addUser(user);
         return modelAndView;
     }
 
@@ -52,7 +56,7 @@ public class AdminController {
     public ModelAndView updateUserPage(@PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("updatePage");
-        List<Role> roles = userService.getAllRole();
+        List<Role> roles = roleService.getAllRole();
         User user = userService.getUserById(id);
         modelAndView.addObject("rolesList", roles);
         modelAndView.addObject("user", user);
@@ -63,17 +67,19 @@ public class AdminController {
     public ModelAndView updateUser(@ModelAttribute("user") User user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/admin");
-        userService.updateUser(parseRoles(user)); //// Parse Roles
+        userService.updateUser(user);
         return modelAndView;
     }
 
-    private User parseRoles(User user) {
-        for (Role role : user.getRoles()) {
-            String[] parseData = role.getRoleName().split("_");
-            role.setRoleId(Long.parseLong(parseData[0]));
-            role.setRoleName(parseData[1]);
-        }
-        return user;
-    }
+//    private User parseRoles(User user) {
+//        for (Role role : user.getRoles()) {
+//            String[] parseData = role.getRoleName().split("_");
+//            role.setRoleId(Long.parseLong(parseData[0]));
+//            role.setRoleName(parseData[1]);
+//        }
+//
+//        System.out.println(user.getRoles().toString());
+//        return user;
+//    }
 
 }
