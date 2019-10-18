@@ -112,6 +112,7 @@
                                 <div class="form-row justify-content-center">
                                     <label for="userId" th:for="'userId' + ${user.id}">ID</label>
                                     <input class="form-control" id="userId" th:id="'userId' + ${user.id}" name="id" placeholder="ID" th:value="${user.id}" disabled>
+                                    <input th:id="'userId' + ${user.id}" name="id" th:value="${user.id}" hidden>
                                 </div>
                                 <div class="form-row justify-content-center">
                                     <label for="name" th:for="'userName' + ${user.id}">Name</label>
