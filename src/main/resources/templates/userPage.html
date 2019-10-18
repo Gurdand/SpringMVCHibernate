@@ -1,13 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head::head">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-</head>
+<head th:replace="fragments/head::head"></head>
+
 <body>
+
     <div th:replace="fragments/header::header"></div>
+
     <div class="container-fluid">
         <div class="row">
-            <div th:replace="fragments/sideBar::sideBar"></div>
+
+            <nav th:fragment="sidebar" class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="list-group">
+                    <a sec:authorize="hasRole('ROLE_ADMIN')" href="/admin" class="list-group-item list-group-item-action">Admin</a>
+                    <a href="/user" class="list-group-item list-group-item-action active">User</a>
+                </div>
+            </nav>
+
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">User Page</h1>
